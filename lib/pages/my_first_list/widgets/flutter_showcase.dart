@@ -41,42 +41,39 @@ class _FlutterShowcaseState extends State<FlutterShowcase>
                 horizontal: 0.w,
               ),
               sliver: ListViewGroupHandler(
-                numberOfSections: controller.state.showcaseList.length,
-                numberOfRowsInSection: (section) =>
-                    controller.state.showcaseList[section].item.length,
-                cellForRowAtIndexPath: (indexPath) => flutterShowcaseCell(
-                    controller.state.showcaseList[indexPath.section]
-                        .item[indexPath.row]),
-                headerInSection: (section) => Container(
-                  height: 50,
-                  color: Colors.red,
-                  margin: EdgeInsets.only(left: 20),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'header ${section + 1}',
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: AppColor.primaryText,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                overallHeader: () => Text('overallHeader'),
-                overallFooter: () => Text('overallFooter'),
-                footerInSection: (section) => Text('each item footer'),
-                placeholder: () {
-                  return Center(
-                    child: Text("啥也没得"),
-                  );
-                },
-              ),
+                  numberOfSections: controller.state.showcaseList.length,
+                  numberOfRowsInSection: (section) =>
+                      controller.state.showcaseList[section].item.length,
+                  cellForRowAtIndexPath: (indexPath) => flutterShowcaseCell(
+                      controller.state.showcaseList[indexPath.section]
+                          .item[indexPath.row]),
+                  headerInSection: (section) => _headerInSection(section),
+                  overallHeader: () => Text('overallHeader'),
+                  overallFooter: () => Text('overallFooter'),
+                  footerInSection: (section) => Text('each item footer')),
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _headerInSection(int section) {
+    return Container(
+      height: 30,
+      color: Colors.green.withOpacity(0.3),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        // crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'header ${section + 1}',
+            style: TextStyle(
+              fontSize: 18,
+              color: AppColor.primaryText,
+            ),
+          ),
+        ],
       ),
     );
   }

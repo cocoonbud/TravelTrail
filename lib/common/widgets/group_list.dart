@@ -7,8 +7,8 @@ enum IndexPathType {
   sectionFooter,
   sectionSeparator,
   row,
-  separator, //分割线
-  placeholder, //占位
+  separator,
+  placeholder,
 }
 
 class IndexPath {
@@ -49,7 +49,7 @@ class ListViewGroupHandler extends StatefulWidget {
 
   final Widget Function()? overallFooter;
 
-  final Widget Function()? placeholder;
+  final Widget Function()? placeholderView;
 
   ListViewGroupHandler(
       {Key? key,
@@ -62,7 +62,7 @@ class ListViewGroupHandler extends StatefulWidget {
       this.footerInSection,
       this.overallHeader,
       this.overallFooter,
-      this.placeholder})
+      this.placeholderView})
       : super(key: key);
 
   @override
@@ -107,14 +107,16 @@ class _ListViewGroupHandlerState extends State<ListViewGroupHandler> {
 
     int sectionCount = widget.numberOfSections;
 
+    int rows = 0;
+
     for (int i = 0; i < sectionCount; i++) {
-      if (widget.headerInSection!(i) != null) {
+      if (widget.headerInSection != null) {
         indexPath =
             IndexPath(section: i, row: 0, type: IndexPathType.sectionHeader);
         _indexToIndexPathList.add(indexPath);
       }
 
-      final int rows = widget.numberOfRowsInSection!(i);
+      rows = widget.numberOfRowsInSection!(i);
 
       for (int j = 0; j < rows; j++) {
         //Add item
@@ -129,7 +131,7 @@ class _ListViewGroupHandlerState extends State<ListViewGroupHandler> {
         }
       }
 
-      if (widget.footerInSection!(i) != null) {
+      if (widget.footerInSection != null) {
         indexPath =
             IndexPath(section: i, row: 0, type: IndexPathType.sectionFooter);
         _indexToIndexPathList.add(indexPath);
@@ -169,7 +171,7 @@ class _ListViewGroupHandlerState extends State<ListViewGroupHandler> {
       case IndexPathType.separator:
         return widget.separatorAtIndexPath!(item);
       case IndexPathType.placeholder:
-        return widget.placeholder!();
+        return widget.placeholderView!();
       default:
         break;
     }
