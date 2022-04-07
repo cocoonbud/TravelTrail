@@ -3,7 +3,9 @@ import 'package:trave_trall/common/entities/entities.dart';
 import 'package:trave_trall/common/style/style.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-Widget flutterShowcaseCell(ShowcaseResponseEntity item) {
+Widget flutterShowcaseCell(
+  ShowcaseItemEntity item,
+) {
   return Container(
     height: 44.h,
     padding: EdgeInsets.only(left: 20.w, right: 20.w),
@@ -15,16 +17,6 @@ Widget flutterShowcaseCell(ShowcaseResponseEntity item) {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Text(
-                (item.contentType.index + 1).toString() + '.',
-                style: TextStyle(
-                  fontSize: 18,
-                  color: AppColor.primaryText,
-                ),
-              ),
-              SizedBox(
-                width: 10.w,
-              ),
               Text(
                 item.name,
                 style: TextStyle(

@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:trave_trall/common/routes/routes.dart';
-import 'package:trave_trall/common/services/storage.dart';
 import 'package:trave_trall/common/store/store.dart';
 
 import 'package:get/get.dart';
-
-import '../values/storage.dart';
 
 /// 第一次欢迎页面
 class RouteWelcomeMiddleware extends GetMiddleware {
@@ -17,8 +14,6 @@ class RouteWelcomeMiddleware extends GetMiddleware {
 
   @override
   RouteSettings? redirect(String? route) {
-    StorageService.to.setBool(STORAGE_DEVICE_FIRST_OPEN_KEY, true);
-
     if (ConfigStore.to.isFirstOpen == true) {
       return null;
     } else if (UserStore.to.isLogin == true) {

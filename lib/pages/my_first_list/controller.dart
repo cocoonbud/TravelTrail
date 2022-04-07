@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../common/routes/names.dart';
+import '../../common/widgets/group_list.dart';
 import 'index.dart';
 
 class MyFirstListController extends GetxController {
@@ -25,11 +26,11 @@ class MyFirstListController extends GetxController {
     refreshController.refreshCompleted();
   }
 
-  void handleCellClicked(int idx) {
-    ShowcaseResponseEntity model;
+  void handleCellClicked(IndexPath indexPath) {
+    ShowcaseItemEntity model;
 
-    if (idx < state.showcaseList.length) {
-      model = state.showcaseList[idx];
+    if (indexPath.row < state.showcaseList[indexPath.section].item.length) {
+      model = state.showcaseList[indexPath.section].item[indexPath.row];
 
       switch (model.contentType) {
         case ShowcaseContentType.flutterUI:
@@ -45,6 +46,8 @@ class MyFirstListController extends GetxController {
                   'assets/markdown/indepth_understand_flutter_multithreading.md',
             ));
           }
+          break;
+        case ShowcaseContentType.flutterAnimation:
           break;
       }
     }

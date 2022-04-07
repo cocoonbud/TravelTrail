@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:trave_trall/common/apis/apis.dart';
 import 'package:trave_trall/common/entities/entities.dart';
 import 'package:trave_trall/common/routes/routes.dart';
+import 'package:trave_trall/common/services/storage.dart';
 import 'package:trave_trall/common/store/store.dart';
 import 'package:trave_trall/common/utils/utils.dart';
 import 'package:trave_trall/common/widgets/widgets.dart';
 import 'package:get/get.dart';
+import '../../../common/values/storage.dart';
 import '../privacy_dialog/view.dart';
 import 'index.dart';
 
@@ -69,8 +71,7 @@ class SignInController extends GetxController {
   void onReady() async {
     super.onReady();
 
-    // var isAgree = StorageService.to.getBool(STORAGE_AGREE_AGREEMENT);
-    var isAgree = false;
+    var isAgree = StorageService.to.getBool(STORAGE_AGREE_AGREEMENT);
 
     if (isAgree == false) {
       Get.dialog(PrivacyDialog());
