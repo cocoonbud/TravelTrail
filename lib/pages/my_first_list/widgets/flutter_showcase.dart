@@ -84,7 +84,7 @@ class _FlutterShowcaseState extends State<FlutterShowcase>
 
   Widget? _footerInSection(int section) {
     if (section == 0) {
-      return Text('each item footer');
+      return Text('seaction one footer');
     } else {
       return null;
     }
