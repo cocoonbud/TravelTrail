@@ -22,15 +22,15 @@ typedef SectionSeparator = Widget Function(int section);
 
 typedef SeparatorAtIndexPath = Widget Function(IndexPath indexPath);
 
-typedef HeaderInSection = Widget Function(int section);
+typedef HeaderInSection = Widget? Function(int section);
 
-typedef FooterInSection = Widget Function(int section);
+typedef FooterInSection = Widget? Function(int section);
 
 typedef CellForRowAtIndexPath = Widget Function(IndexPath indexPath);
 
 typedef NumberOfRowsInSection = int Function(int section);
 
-class ListViewGroupHandler extends StatefulWidget {
+class GroupSliverList extends StatefulWidget {
   final int numberOfSections;
 
   final NumberOfRowsInSection? numberOfRowsInSection;
@@ -51,7 +51,7 @@ class ListViewGroupHandler extends StatefulWidget {
 
   final Widget Function()? placeholderView;
 
-  ListViewGroupHandler(
+  GroupSliverList(
       {Key? key,
       this.numberOfSections = 1,
       required this.numberOfRowsInSection,
@@ -66,15 +66,15 @@ class ListViewGroupHandler extends StatefulWidget {
       : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _ListViewGroupHandlerState();
+  State<StatefulWidget> createState() => _GroupSliverListState();
 }
 
-class _ListViewGroupHandlerState extends State<ListViewGroupHandler> {
-  late List<IndexPath> _indexToIndexPathList;
+class _GroupSliverListState extends State<GroupSliverList> {
+  late List<IndexPath> _allItemList;
 
   @override
   void initState() {
-    _indexToIndexPathList = [];
+    _allItemList = [];
     super.initState();
   }
 
@@ -89,71 +89,73 @@ class _ListViewGroupHandlerState extends State<ListViewGroupHandler> {
           onTap: () {},
           child: _itemBuilder(index),
         ),
-        childCount: _indexToIndexPathList.length,
+        childCount: _allItemList.length,
       ),
     );
   }
 
   void _calIndexPath() {
-    _indexToIndexPathList = [];
+    _allItemList = [];
     IndexPath indexPath;
 
-    // 先加入 overallHeader
+    // add overallHeader
     if (widget.overallHeader != null) {
       indexPath =
           IndexPath(section: 0, row: 0, type: IndexPathType.overallHeader);
-      _indexToIndexPathList.add(indexPath);
+      _allItemList.add(indexPath);
     }
 
     int sectionCount = widget.numberOfSections;
-
     int rows = 0;
 
     for (int i = 0; i < sectionCount; i++) {
-      if (widget.headerInSection != null) {
+      // add sectionHeader
+      if (widget.headerInSection!(i) != null) {
         indexPath =
             IndexPath(section: i, row: 0, type: IndexPathType.sectionHeader);
-        _indexToIndexPathList.add(indexPath);
+        _allItemList.add(indexPath);
       }
 
       rows = widget.numberOfRowsInSection!(i);
 
       for (int j = 0; j < rows; j++) {
-        //Add item
+        // add row
         indexPath = IndexPath(section: i, row: j, type: IndexPathType.row);
-        _indexToIndexPathList.add(indexPath);
+        _allItemList.add(indexPath);
 
         //Add separator
         if (widget.separatorAtIndexPath != null) {
           indexPath =
               IndexPath(section: i, row: j, type: IndexPathType.separator);
-          _indexToIndexPathList.add(indexPath);
+          _allItemList.add(indexPath);
         }
       }
 
-      if (widget.footerInSection != null) {
+      // add sectionFooter
+      if (widget.footerInSection!(i) != null) {
         indexPath =
             IndexPath(section: i, row: 0, type: IndexPathType.sectionFooter);
-        _indexToIndexPathList.add(indexPath);
+        _allItemList.add(indexPath);
       }
 
-      //Add section separator
+      // add section separator
       if (widget.sectionSeparator != null) {
         indexPath =
             IndexPath(section: i, row: 0, type: IndexPathType.sectionSeparator);
-        _indexToIndexPathList.add(indexPath);
+        _allItemList.add(indexPath);
       }
     }
 
+    // add overallFooter
     if (widget.overallFooter != null) {
       indexPath =
           IndexPath(section: 0, row: 0, type: IndexPathType.overallFooter);
-      _indexToIndexPathList.add(indexPath);
+      _allItemList.add(indexPath);
     }
   }
 
-  Widget _itemBuilder(int index) {
-    final IndexPath item = _indexToIndexPathList[index];
+  Widget? _itemBuilder(int index) {
+    final IndexPath item = _allItemList[index];
 
     switch (item.type) {
       case IndexPathType.overallHeader:
